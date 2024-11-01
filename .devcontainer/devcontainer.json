@@ -1,37 +1,51 @@
 {
-  "name": "Editor",
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "features": {
-    "ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-      "packages": "pkg-config"
+  "name": "DevContainer for Haskell (GHC, Stack, Cabal, HIE, LSP, DAP, etc.)",
+  "remoteUser": "vscode",
+  "runArgs": [],
+  "build": {
+    "args": {
+      "USERNAME": "vscode",
+      "GHC_VERSION": "9.6.3",
+      "STACK_VERSION": "recommended",
+      "STACK_RESOLVER": "nightly",
+      "CABAL_VERSION": "recommended",
+      "HLS_VERSION": "recommended",
+      "LLVM_VERSION": "17"
     },
-    "ghcr.io/devcontainers-contrib/features/haskell:2": {
-      "globalPackages": "hlint ormolu"
-    }
+    "context": "..",
+    "dockerfile": "Dockerfile"
   },
   "customizations": {
     "vscode": {
       "extensions": [
         "haskell.haskell",
-        "james-yu.latex-workshop"
+        "phoityne.phoityne-vscode",
+        "eriksik2.vscode-ghci",
+        "jcanero.hoogle-vscode"
       ],
       "settings": {
-        "editor.formatOnSave": true,
-        "git.fetchOnPull": true,
-        "git.autofetch": "all",
-        "git.pruneOnFetch": true,
-        "git.autofetchPeriod": 3600,
-        "update.showReleaseNotes": false,
-        "githubPullRequests.ignoredPullRequestBranches": [
-          "main"
-        ]
+        "files.exclude": {
+          "**/*.olean": true,
+          "**/.DS_Store": true,
+          "**/.git": true,
+          "**/.hg": true,
+          "**/.svn": true,
+          "**/CVS": true
+        },
+        "haskell.checkProject": true,
+        "haskell.formattingProvider": "ormolu",
+        "haskell.indentationRules.enabled": true,
+        "haskell.liquidOn": false,
+        "haskell.checkParents": "CheckOnSave",
+        "haskell.manageHLS": "GHCup",
+        "haskell.maxCompletions": 40,
+        "haskell.openDocumentationInHackage": false,
+        "haskell.openSourceInHackage": false,
+        "haskell.trace.client": "error",
+        "haskell.trace.server": "off",
+        "haskell.upgradeGHCup": true,
+        "hoogle-vscode.useCabalDependencies": true
       }
     }
-  },
-  "onCreateCommand": {
-    "build": "stack build"
-  },
-  "postStartCommand": {
-    "pull": "git pull --all"
   }
 }
